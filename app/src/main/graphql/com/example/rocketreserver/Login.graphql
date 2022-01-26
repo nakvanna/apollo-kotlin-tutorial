@@ -1,0 +1,22 @@
+mutation Login($email: String!) {
+    login(email: $email){
+        id
+        email
+        profileImage
+        token
+        trips{
+            id
+            isBooked
+            mission{
+                missionPatch(size: SMALL)
+                name
+            }
+            rocket{
+                id
+                name
+                type
+            }
+            site
+        }
+    }
+}
