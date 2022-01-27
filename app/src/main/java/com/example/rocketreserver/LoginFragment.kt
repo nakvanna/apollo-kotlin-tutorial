@@ -1,6 +1,7 @@
 package com.example.rocketreserver
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -32,17 +33,21 @@ class LoginFragment : Fragment() {
 
             binding.submitProgressBar.visibility = View.VISIBLE
             binding.submit.visibility = View.GONE
+
             lifecycleScope.launchWhenResumed {
                 val response = try {
-                    apolloClient.mutation(LoginMutation(email = email)).execute()
+                    apolloClient(requireContext()).mutation(LoginMutation(email = email)).execute()
                 } catch (e: Exception) {
+                    Log.i("Login", "Login Error")
                     null
                 }
 
                 val login = response?.data?.login
+                Log.i("Log", "Result: ${response?.data}")
                 if (login == null || response.hasErrors()) {
                     binding.submitProgressBar.visibility = View.GONE
                     binding.submit.visibility = View.VISIBLE
+                    println("ON login == null || response.hasErrors()")
                     return@launchWhenResumed
                 }
 

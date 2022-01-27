@@ -25,6 +25,7 @@ class LaunchListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = LaunchListFragmentBinding.inflate(inflater)
+
         return binding.root
     }
 
@@ -49,9 +50,8 @@ class LaunchListFragment : Fragment() {
         lifecycleScope.launchWhenResumed {
             var cursor: String? = null
             for (item in channel) {
-                Log.i("LaunchList-Item", "On channel trySend when the list reached of end!")
                 val response = try {
-                    apolloClient.query(LaunchListQuery(Optional.Present(cursor))).execute()
+                    apolloClient(requireContext()).query(LaunchListQuery(Optional.Present(cursor))).execute()
                 } catch (e: ApolloException) {
                     Log.d("LaunchList", "Failure", e)
                     return@launchWhenResumed
